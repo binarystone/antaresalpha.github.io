@@ -37,16 +37,94 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setInterval(updateBiometrics, 2000);
 
-    submitBtn.addEventListener('click', function() {
-        if (responseInput.value.trim() === '') {
-            return;
-        }
+    function showLoadingScreen() {
+        const loadingHTML = `
+            <div class="loading-screen">
+                <div class="loading-header">
+                    <h2>PROCESSING NEURAL RESPONSE</h2>
+                    <div class="loading-bar">
+                        <div class="loading-progress"></div>
+                    </div>
+                </div>
+                <div class="analysis-data">
+                    <div class="data-stream">
+                        <span class="data-text">ANALYZING EMOTIONAL PATTERNS</span>
+                        <span class="data-value">[ IN PROGRESS ]</span>
+                    </div>
+                    <div class="data-stream">
+                        <span class="data-text">QUANTUM PROCESSING</span>
+                        <span class="data-value">[ ACTIVE ]</span>
+                    </div>
+                    <div class="data-stream">
+                        <span class="data-text">NEURAL SYNC</span>
+                        <span class="data-value">[ 67.3% ]</span>
+                    </div>
+                </div>
+                <div class="data-log">
+                    <p>> Initializing response analysis...</p>
+                    <p>> Scanning emotional wavelengths...</p>
+                    <p>> Processing linguistic patterns...</p>
+                    <p>> Calculating empathy quotient...</p>
+                </div>
+            </div>
+        `;
 
+        const questionContainer = document.getElementById('questionContainer');
+        questionContainer.innerHTML = loadingHTML;
+
+        // Simulate loading progress
+        const progress = document.querySelector('.loading-progress');
+        let width = 0;
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                setTimeout(showNextQuestion, 1000);
+            } else {
+                width++;
+                progress.style.width = width + '%';
+            }
+        }, 30);
+
+        // Simulate log updates
+        const dataLog = document.querySelector('.data-log');
+        const logMessages = [
+            '> Analyzing response vectors...',
+            '> Mapping neural pathways...',
+            '> Correlating behavioral patterns...',
+            '> Synthesizing data streams...',
+            '> Compiling results...'
+        ];
+
+        logMessages.forEach((message, index) => {
+            setTimeout(() => {
+                dataLog.innerHTML += `<p>${message}</p>`;
+                dataLog.scrollTop = dataLog.scrollHeight;
+            }, 1000 * (index + 1));
+        });
+    }
+
+    function showNextQuestion() {
         currentQuestion++;
         if (currentQuestion < questions.length) {
-            questionNumber.textContent = `QUERY_0${currentQuestion + 1}`;
-            questionText.textContent = questions[currentQuestion];
-            responseInput.value = '';
+            const questionContainer = document.getElementById('questionContainer');
+            questionContainer.innerHTML = `
+                <p class="question-number">QUERY_0${currentQuestion + 1}</p>
+                <p class="question-text">${questions[currentQuestion]}</p>
+                <textarea class="response-input" id="responseInput" placeholder="ENTER RESPONSE..."></textarea>
+                <div class="biometric-indicators">
+                    <div class="indicator">
+                        <span class="label">PULSE</span>
+                        <span class="value" id="pulseValue">87</span>
+                    </div>
+                    <div class="indicator">
+                        <span class="label">DILATION</span>
+                        <span class="value" id="dilationValue">4.2</span>
+                    </div>
+                </div>
+                <button class="submit-btn" id="submitResponse">PROCESS RESPONSE</button>
+            `;
+            // Reattach event listener to new button
+            document.getElementById('submitResponse').addEventListener('click', handleSubmit);
         } else {
             // Assessment complete
             document.querySelector('.assessment-container').innerHTML = `
@@ -56,5 +134,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         }
-    });
+    }
+
+    function handleSubmit() {
+        if (responseInput.value.trim() === '') {
+            return;
+        }
+        showLoadingScreen();
+    }
+
+    // Replace the existing submit button listener with the new handler
+    if (submitBtn) {
+        submitBtn.addEventListener('click', handleSubmit);
+    }
 }); 
