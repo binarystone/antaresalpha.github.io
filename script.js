@@ -19,28 +19,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const questions = [
-        "You discover an artificial butterfly in your garden. Its wings are damaged but its neural core is still functioning. What is your immediate response?",
-        "A child shows you their favorite digital pet. It's malfunctioning and displaying signs of distress. How do you react?",
-        "You receive an anonymous message revealing that your closest friend is a synthetic being. What are your thoughts?",
-        "In your dream, you can't distinguish if you're human or artificial. How does this make you feel?"
+        {
+            question: "You discover an artificial butterfly in your garden. Its wings are damaged but its neural core is still functioning. What is your immediate response?",
+            options: [
+                "Attempt to repair its wings using available materials",
+                "Leave it be, as interference might cause more harm",
+                "Take it to the nearest synthetic life repair center"
+            ]
+        },
+        {
+            question: "A child shows you their favorite digital pet. It's malfunctioning and displaying signs of distress. How do you react?",
+            options: [
+                "Offer to help diagnose and fix the issue immediately",
+                "Suggest getting a new, upgraded model instead",
+                "Explain that digital beings can't feel real distress"
+            ]
+        },
+        {
+            question: "You receive an anonymous message revealing that your closest friend is a synthetic being. What are your thoughts?",
+            options: [
+                "Nothing changes - friendship transcends physical form",
+                "Feel betrayed by the years of deception",
+                "Seek verification of this information first"
+            ]
+        },
+        {
+            question: "In your dream, you can't distinguish if you're human or artificial. How does this make you feel?",
+            options: [
+                "Intrigued by the philosophical implications",
+                "Anxious about your true nature",
+                "Indifferent - dreams aren't reality"
+            ]
+        }
     ];
 
     let currentQuestion = 0;
-    const questionText = document.querySelector('.question-text');
-    const questionNumber = document.querySelector('.question-number');
-    const responseInput = document.getElementById('responseInput');
-    const submitBtn = document.getElementById('submitResponse');
-    const pulseValue = document.getElementById('pulseValue');
-    const dilationValue = document.getElementById('dilationValue');
-
-    function updateBiometrics() {
-        if (pulseValue && dilationValue) {
-            pulseValue.textContent = Math.floor(Math.random() * (95 - 65) + 65);
-            dilationValue.textContent = (Math.random() * (6.5 - 2.8) + 2.8).toFixed(1);
-        }
-    }
-
-    setInterval(updateBiometrics, 2000);
 
     function showLoadingScreen() {
         const loadingHTML = `
@@ -78,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (questionContainer) {
             questionContainer.innerHTML = loadingHTML;
 
-            // Simulate loading progress
             const progress = document.querySelector('.loading-progress');
             let width = 0;
             const interval = setInterval(() => {
@@ -91,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, 30);
 
-            // Simulate log updates
             const dataLog = document.querySelector('.data-log');
             const logMessages = [
                 '> Analyzing response vectors...',
@@ -115,29 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function showNextQuestion() {
         currentQuestion++;
         if (currentQuestion < questions.length) {
-            const questionContainer = document.getElementById('questionContainer');
-            if (questionContainer) {
-                questionContainer.innerHTML = `
-                    <p class="question-number">QUERY_0${currentQuestion + 1}</p>
-                    <p class="question-text">${questions[currentQuestion]}</p>
-                    <textarea class="response-input" id="responseInput" placeholder="ENTER RESPONSE..."></textarea>
-                    <div class="biometric-indicators">
-                        <div class="indicator">
-                            <span class="label">PULSE</span>
-                            <span class="value" id="pulseValue">87</span>
-                        </div>
-                        <div class="indicator">
-                            <span class="label">DILATION</span>
-                            <span class="value" id="dilationValue">4.2</span>
-                        </div>
-                    </div>
-                    <button class="submit-btn" id="submitResponse">PROCESS RESPONSE</button>
-                `;
-                // Reattach event listener to new button
-                document.getElementById('submitResponse')?.addEventListener('click', handleSubmit);
-            }
+            displayQuestion(currentQuestion);
         } else {
-            // Assessment complete
             const container = document.querySelector('.assessment-container');
             if (container) {
                 container.innerHTML = `
@@ -153,15 +143,49 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function handleSubmit() {
-        if (responseInput && responseInput.value.trim() === '') {
-            return;
+    function displayQuestion(index) {
+        const questionContainer = document.getElementById('questionContainer');
+        if (questionContainer) {
+            questionContainer.innerHTML = `
+                <p class="question-number">QUERY_0${index + 1}</p>
+                <p class="question-text">${questions[index].question}</p>
+                <div class="response-options">
+                    ${questions[index].options.map((option, i) => `
+                        <button class="response-btn" data-option="${i}">${option}</button>
+                    `).join('')}
+                </div>
+                <div class="biometric-indicators">
+                    <div class="indicator">
+                        <span class="label">PULSE</span>
+                        <span class="value" id="pulseValue">87</span>
+                    </div>
+                    <div class="indicator">
+                        <span class="label">DILATION</span>
+                        <span class="value" id="dilationValue">4.2</span>
+                    </div>
+                </div>
+            `;
+
+            // Add click handlers to the new buttons
+            const responseButtons = questionContainer.querySelectorAll('.response-btn');
+            responseButtons.forEach(button => {
+                button.addEventListener('click', () => showLoadingScreen());
+            });
         }
-        showLoadingScreen();
     }
 
-    // Attach event listener to submit button if it exists
-    if (submitBtn) {
-        submitBtn.addEventListener('click', handleSubmit);
+    // Initialize first question
+    displayQuestion(0);
+
+    // Update biometrics
+    function updateBiometrics() {
+        const pulseValue = document.getElementById('pulseValue');
+        const dilationValue = document.getElementById('dilationValue');
+        if (pulseValue && dilationValue) {
+            pulseValue.textContent = Math.floor(Math.random() * (95 - 65) + 65);
+            dilationValue.textContent = (Math.random() * (6.5 - 2.8) + 2.8).toFixed(1);
+        }
     }
+
+    setInterval(updateBiometrics, 2000);
 }); 
