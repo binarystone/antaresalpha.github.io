@@ -1,19 +1,19 @@
 // Add smooth scrolling for the CTA button
-document.querySelector('.cta-button').addEventListener('click', function(e) {
+document.querySelector('.cta-button')?.addEventListener('click', function(e) {
     e.preventDefault();
-    // You can add scroll behavior or other interactive features here
     console.log('CTA button clicked!');
 });
 
 // Add a simple animation when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     const hero = document.querySelector('.hero');
-    hero.style.opacity = 0;
-    
-    setTimeout(() => {
-        hero.style.transition = 'opacity 1s ease-in-out';
-        hero.style.opacity = 1;
-    }, 100);
+    if (hero) {
+        hero.style.opacity = 0;
+        setTimeout(() => {
+            hero.style.transition = 'opacity 1s ease-in-out';
+            hero.style.opacity = 1;
+        }, 100);
+    }
 
     const questions = [
         "You discover an artificial butterfly in your garden. Its wings are damaged but its neural core is still functioning. What is your immediate response?",
@@ -31,8 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const dilationValue = document.getElementById('dilationValue');
 
     function updateBiometrics() {
-        pulseValue.textContent = Math.floor(Math.random() * (95 - 65) + 65);
-        dilationValue.textContent = (Math.random() * (6.5 - 2.8) + 2.8).toFixed(1);
+        if (pulseValue && dilationValue) {
+            pulseValue.textContent = Math.floor(Math.random() * (95 - 65) + 65);
+            dilationValue.textContent = (Math.random() * (6.5 - 2.8) + 2.8).toFixed(1);
+        }
     }
 
     setInterval(updateBiometrics, 2000);
@@ -70,80 +72,92 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         const questionContainer = document.getElementById('questionContainer');
-        questionContainer.innerHTML = loadingHTML;
+        if (questionContainer) {
+            questionContainer.innerHTML = loadingHTML;
 
-        // Simulate loading progress
-        const progress = document.querySelector('.loading-progress');
-        let width = 0;
-        const interval = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(interval);
-                setTimeout(showNextQuestion, 1000);
-            } else {
-                width++;
-                progress.style.width = width + '%';
-            }
-        }, 30);
+            // Simulate loading progress
+            const progress = document.querySelector('.loading-progress');
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(showNextQuestion, 1000);
+                } else {
+                    width++;
+                    if (progress) progress.style.width = width + '%';
+                }
+            }, 30);
 
-        // Simulate log updates
-        const dataLog = document.querySelector('.data-log');
-        const logMessages = [
-            '> Analyzing response vectors...',
-            '> Mapping neural pathways...',
-            '> Correlating behavioral patterns...',
-            '> Synthesizing data streams...',
-            '> Compiling results...'
-        ];
+            // Simulate log updates
+            const dataLog = document.querySelector('.data-log');
+            const logMessages = [
+                '> Analyzing response vectors...',
+                '> Mapping neural pathways...',
+                '> Correlating behavioral patterns...',
+                '> Synthesizing data streams...',
+                '> Compiling results...'
+            ];
 
-        logMessages.forEach((message, index) => {
-            setTimeout(() => {
-                dataLog.innerHTML += `<p>${message}</p>`;
-                dataLog.scrollTop = dataLog.scrollHeight;
-            }, 1000 * (index + 1));
-        });
+            logMessages.forEach((message, index) => {
+                setTimeout(() => {
+                    if (dataLog) {
+                        dataLog.innerHTML += `<p>${message}</p>`;
+                        dataLog.scrollTop = dataLog.scrollHeight;
+                    }
+                }, 1000 * (index + 1));
+            });
+        }
     }
 
     function showNextQuestion() {
         currentQuestion++;
         if (currentQuestion < questions.length) {
             const questionContainer = document.getElementById('questionContainer');
-            questionContainer.innerHTML = `
-                <p class="question-number">QUERY_0${currentQuestion + 1}</p>
-                <p class="question-text">${questions[currentQuestion]}</p>
-                <textarea class="response-input" id="responseInput" placeholder="ENTER RESPONSE..."></textarea>
-                <div class="biometric-indicators">
-                    <div class="indicator">
-                        <span class="label">PULSE</span>
-                        <span class="value" id="pulseValue">87</span>
+            if (questionContainer) {
+                questionContainer.innerHTML = `
+                    <p class="question-number">QUERY_0${currentQuestion + 1}</p>
+                    <p class="question-text">${questions[currentQuestion]}</p>
+                    <textarea class="response-input" id="responseInput" placeholder="ENTER RESPONSE..."></textarea>
+                    <div class="biometric-indicators">
+                        <div class="indicator">
+                            <span class="label">PULSE</span>
+                            <span class="value" id="pulseValue">87</span>
+                        </div>
+                        <div class="indicator">
+                            <span class="label">DILATION</span>
+                            <span class="value" id="dilationValue">4.2</span>
+                        </div>
                     </div>
-                    <div class="indicator">
-                        <span class="label">DILATION</span>
-                        <span class="value" id="dilationValue">4.2</span>
-                    </div>
-                </div>
-                <button class="submit-btn" id="submitResponse">PROCESS RESPONSE</button>
-            `;
-            // Reattach event listener to new button
-            document.getElementById('submitResponse').addEventListener('click', handleSubmit);
+                    <button class="submit-btn" id="submitResponse">PROCESS RESPONSE</button>
+                `;
+                // Reattach event listener to new button
+                document.getElementById('submitResponse')?.addEventListener('click', handleSubmit);
+            }
         } else {
             // Assessment complete
-            document.querySelector('.assessment-container').innerHTML = `
-                <div class="assessment-header">
-                    <h2>ASSESSMENT COMPLETE</h2>
-                    <p class="system-text">[ANALYZING NEURAL PATTERNS]</p>
-                </div>
-            `;
+            const container = document.querySelector('.assessment-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="assessment-header">
+                        <h2>ASSESSMENT COMPLETE</h2>
+                        <p class="system-text">[ANALYZING NEURAL PATTERNS]</p>
+                        <div class="loading-bar">
+                            <div class="loading-progress"></div>
+                        </div>
+                    </div>
+                `;
+            }
         }
     }
 
     function handleSubmit() {
-        if (responseInput.value.trim() === '') {
+        if (responseInput && responseInput.value.trim() === '') {
             return;
         }
         showLoadingScreen();
     }
 
-    // Replace the existing submit button listener with the new handler
+    // Attach event listener to submit button if it exists
     if (submitBtn) {
         submitBtn.addEventListener('click', handleSubmit);
     }
