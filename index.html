@@ -3,14 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Page</title>
+    <title>Antares Alpha</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://source.unsplash.com/random/1920x1080/?clouds') center/cover no-repeat fixed;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(4px);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .hero h1 {
+            color: #2c3e50;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            color: #34495e;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content {
+                padding: 30px;
+            }
+        }
+    </style>
 </head>
 <body>
     <section class="hero">
-        <h1>Welcome to Antares Alpha</h1>
-        <p>Discover a new way of experiencing technology through our innovative platform. Join us on this exciting journey.</p>
-        <a href="#" class="cta-button">Get Started</a>
+        <div class="hero-content">
+            <h1>Welcome to Antares Alpha</h1>
+            <p>Discover a new way of experiencing technology through our innovative platform. Join us on this exciting journey.</p>
+            <a href="about.html" class="cta-button">Get Started</a>
+        </div>
     </section>
     <script src="script.js"></script>
 </body>
