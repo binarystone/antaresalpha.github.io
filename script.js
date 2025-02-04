@@ -1,6 +1,9 @@
 // Add smooth scrolling for the CTA button
 document.querySelector('.cta-button')?.addEventListener('click', function(e) {
-    e.preventDefault();
+    // Only prevent default if it's not a navigation button
+    if (!this.getAttribute('href')) {
+        e.preventDefault();
+    }
     console.log('CTA button clicked!');
 });
 
