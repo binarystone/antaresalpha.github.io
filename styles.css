@@ -389,4 +389,138 @@ body::before {
     .tagline {
         font-size: 1.4rem;
     }
+}
+
+.assessment-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.assessment-container {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #00fff9;
+    padding: 2rem;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    overflow: hidden;
+}
+
+.scanner-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #ff00c1;
+    animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100%); }
+}
+
+.assessment-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.assessment-header h2 {
+    color: #00fff9;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+}
+
+.system-text {
+    color: #ff00c1;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    animation: blink 1s infinite;
+}
+
+.question-container {
+    padding: 1rem;
+    border: 1px solid rgba(0, 255, 249, 0.3);
+}
+
+.question-number {
+    color: #ff00c1;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.question-text {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.response-input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #00fff9;
+    color: #00fff9;
+    padding: 1rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    resize: vertical;
+    min-height: 100px;
+    font-family: 'Courier New', monospace;
+}
+
+.biometric-indicators {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.indicator .label {
+    color: #ff00c1;
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+}
+
+.indicator .value {
+    color: #00fff9;
+    font-size: 1.2rem;
+    font-family: 'Courier New', monospace;
+}
+
+.submit-btn {
+    background: transparent;
+    border: 2px solid #00fff9;
+    color: #00fff9;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    letter-spacing: 2px;
+}
+
+.submit-btn:hover {
+    background: rgba(0, 255, 249, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 249, 0.4);
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 } 
